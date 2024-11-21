@@ -3,14 +3,17 @@ import React from "react";
 import { FaWhatsapp } from "react-icons/fa";
 import { MdOutlineLocalPhone } from "react-icons/md";
 import { house } from "@/data/house";
+import Link from "next/link";
 const HouseListingsCard = () => {
   return (
     <>
       {house.map((houses) => (
         <div key={houses.id} className="min-w-[356px] min-h-72 p-2 overflow-clip">
+          <Link href={`/property/${houses.id}`}>
           <div className="min-h-56 relative rounded-xl overflow-clip">
             <Image src={houses.imageUrl} alt="" fill className="object-cover" />
           </div>
+          </Link>
           <div className="p-4 flex flex-col gap-2">
             <span className="font-semibold text-md text-blue-500 my-2">
               {houses.title}

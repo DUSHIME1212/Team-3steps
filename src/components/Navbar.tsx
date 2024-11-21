@@ -12,11 +12,11 @@ const Navbar = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const links = [
-    { label: "Home", url: "#home" },
-    { label: "About us", url: "#about" },
-    { label: "Listings", url: "#listings" },
+    { label: "Home", url: "/#home" },
+    { label: "About us", url: "/#about" },
+    { label: "Listings", url: "/#listings" },
     { label: "Testimonies", url: "/#test" },
-    { label: "Blog", url: "#blog" },
+    { label: "Blog", url: "/#blog" },
   ];
 
   return (

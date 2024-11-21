@@ -19,7 +19,7 @@ const Hero = () => {
     <div className="min-h-svh flex flex-col items-center px-8 md:px-16 lg:px-32 justify-center relative">
       <div className="hidden size-full md:flex lg:flex max-h-screen max-w-screen-md absolute -z-50 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-gradient-to-t from-darkBlue/20 to-40% to-transparent rounded-full" />
       <div className="size-full mt-32 flex flex-col md:flex-row lg:flex-row justify-center">
-        <div className="w-100 md:w-1/2 lg:w-1/2 p-0 md:p-16 lg:p-16 mt-40 md:mt-0 lg:mt-0">
+        <div className="w-100 md:w-1/2 lg:w-1/2 p-0 md:p-16 lg:p-16 mt-8 md:mt-0 lg:mt-0">
           <div className="mb-4 flex flex-col gap-4">
             <span className="font-semibold text-blue-500">REAL ESTATE</span>
             <h1 className="text-2xl md:text-5xl lg:text-5xl font-semibold">
