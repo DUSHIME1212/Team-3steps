@@ -48,7 +48,7 @@ const Navbar = () => {
         <div className="flex flex-col items-center">
 
           <div className="h-24 w-24 relative hidden md:flex lg:flex">
-            <Image src={'/3steps1.png'} alt="" className="object-contain" fill />
+            <Image src={'/logo3.png'} alt="" className="object-contain" fill />
           </div>
           {/* Action Buttons for Mobile */}
           {isMobileMenuOpen && (
