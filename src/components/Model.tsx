@@ -14,13 +14,6 @@ import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ArrowLeft, ArrowRight } from "lucide-react"; // Importing icons
 import { useAuth } from "../hooks/useAuth"; // Assuming these hooks are defined as discussed
-import { toast } from "react-toastify"; // Importing toast
-
-enum Status {
-  ACTIVE = "ACTIVE",
-  INACTIVE = "INACTIVE",
-  // Add other statuses as needed
-}
 
 export function DialogDemo() {
   const [step, setStep] = useState(1);
@@ -72,18 +65,6 @@ export function DialogDemo() {
     };
 
     await register(userData); // Send the user data as JSON
-
-  };
-
-  const handleLogin = async () => {
-
-    // Create a plain object with user data
-    const userData = {
-      email: formData.email,
-      password: formData.password
-    };
-
-    await login(userData); // Send the user data as JSON
 
   };
 
