@@ -35,16 +35,16 @@ const Testinmonial = () => {
     },
   ];
   return (
-    <div className="w-full p-8 md:px-16 flex flex-row items-center lg:px-32 min-h-96">
-      <div className=" mb-4 flex w-1/2 flex-col gap-4">
+    <div id="test" className="w-full p-8 md:px-16 flex flex-col md:flex-row lg:flex-row items-center lg:px-32 min-h-96">
+      <div className="mb-4 flex w-100 md:w-1/2 lg:w-1/2 flex-col gap-4">
         <span className="font-semibold text-blue-500">TESTIMONIALS</span>
-        <h1 className="text-5xl font-semibold">Look What Our Customers Say!</h1>
+        <h1 className="text-2xl md:text-5xl lg:text-5xl font-semibold">Look What Our Customers Say!</h1>
         <p className="text-sm">
           Donec porttitor euismod dignissim. Nullam a lacinia ipsum, nec
           dignissim purus.
         </p>
       </div>
-      <div className="w-1/2 min-h-96">
+      <div className="w-full md:w-1/2 lg:w-1/2 min-h-96">
         <Carousel
           autoplay
           dotPosition="right"
@@ -53,10 +53,11 @@ const Testinmonial = () => {
           {testimonial.map((item, index) => (
             <div
               key={index}
-              className="grid p-8 place-items-center size-full border-black min-h-96"
+              // grid p-0 md:p-8 lg:p-8 place-items-center size-full 
+              className="border-black min-h-96"
             >
               <div className="shadow-lg flex flex-col gap-4 p-8 rounded-xl">
-                <h1 className="text-3xl italic">&quot;{item.text}&quot;</h1>
+                <h1 className="text-xl md:text-3xl lg:text-3xl italic">&quot;{item.text}&quot;</h1>
                 <hr className="w-full bg-black/30 h-[2px]" />
                 <div className="p-4 flex flex-row gap-4">
                   <div className="size-12 rounded-full overflow-clip relative">

@@ -1,6 +1,9 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+html {
+  scroll-behavior: smooth;
+}
 @layer base {
   :root {
     --background: 0 0% 100%;
@@ -79,4 +82,9 @@
 }
 ::-webkit-scrollbar-track {
   display: none;
+}
+.wrapper:hover > :not(:hover){
+  opacity: 0.4;
+  filter: blur(0.1px);
+  transition: all 120ms ;
 }
