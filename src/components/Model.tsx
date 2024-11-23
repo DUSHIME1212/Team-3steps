@@ -14,10 +14,11 @@ import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ArrowLeft, ArrowRight } from "lucide-react"; // Importing icons
 import { useAuth } from "../hooks/useAuth"; // Assuming these hooks are defined as discussed
+import InputDemo from "./ui/password";
 
 export function DialogDemo() {
   const [step, setStep] = useState(1);
-  const [file, setFile] = useState<File | null>(null); // for picture upload
+  const [file, setFile] = useState<File | null>(null);
   const [formData, setFormData] = useState({
     firstName: '',
     lastName: '',
@@ -30,7 +31,6 @@ export function DialogDemo() {
 
   const { register, login } = useAuth();
 
-  // Step navigation functions
   const nextStep = () => setStep((prev) => prev + 1);
   const prevStep = () => setStep((prev) => prev - 1);
 
@@ -53,7 +53,7 @@ export function DialogDemo() {
     const birthDate = new Date(formData.birthDate);
     const formattedBirthDate = birthDate.toISOString();
 
-    // Create a plain object with user data
+
     const userData = {
       firstName: formData.firstName,
       lastName: formData.lastName,
@@ -61,10 +61,10 @@ export function DialogDemo() {
       bio: formData.bio,
       email: formData.email,
       password: formData.password,
-      birthDate: formattedBirthDate,  // Use the formatted birth date
+      birthDate: formattedBirthDate, 
     };
 
-    await register(userData); // Send the user data as JSON
+    await register(userData); 
 
   };
 
@@ -212,15 +212,7 @@ export function DialogDemo() {
                   />
                 </div>
                 <div>
-                  <Label htmlFor="password">Password</Label>
-                  <Input
-                    id="password"
-                    name="password"
-                    type="password"
-                    placeholder="Your password"
-                    className="py-6"
-                    onChange={handleInputChange}
-                  />
+                  <InputDemo/>
                 </div>
                 <div>
                   <Label htmlFor="picture">Profile Picture</Label>

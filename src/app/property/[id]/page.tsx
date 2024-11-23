@@ -10,11 +10,10 @@ const SinglePropertyPage = () => {
   const params = useParams();
   const { id } = params;
 
-  // Find the property based on the ID
   const property = house.find((house) => house.id === Number(id));
 
   if (!property) {
-    return <div>Property not found</div>; // Handle the case if property is not found
+    return <div>Property not found</div>; 
   }
 
   return (

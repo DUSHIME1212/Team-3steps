@@ -3,10 +3,9 @@
 enum Status {
     ACTIVE = "ACTIVE",
     INACTIVE = "INACTIVE",
-    // Add other statuses as needed
 }
 
-// User interface
+
 export interface User {
     password: string;
     id?: number;
@@ -15,9 +14,9 @@ export interface User {
     phoneNumber: string;
     email: string;
     birthDate: string;
-    role?: string;  // Enum for role
+    role?: string;
     bio: string | null;
-    status?: Status;  // Enum for status
+    status?: Status;
     picture?: File | null;
     createdAt?: Date;
     updatedAt?: Date;

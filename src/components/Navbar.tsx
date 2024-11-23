@@ -16,11 +16,11 @@ const Navbar = () => {
     { label: "About us", url: "/#about" },
     { label: "Listings", url: "/#listings" },
     { label: "Testimonies", url: "/#test" },
-    { label: "Blog", url: "/#blog" },
+    { label: "property", url: "/property" },
   ];
 
   return (
-    <nav className="flex flex-col w-full z-30 fixed bg-white shadow-lg">
+    <nav className="flex flex-col w-full z-30 h-48 fixed bg-gradient-to-b from-white from-40% to-transparent ">
       {/* Top */}
       <div className="w-full flex justify-between items-center text-white bg-darkBlue px-2 py-2 md:px-16 lg:px-32">
         <p className="uppercase text-sm">Kigali, RWANDA kk509st</p>
@@ -53,7 +53,7 @@ const Navbar = () => {
           {/* Action Buttons for Mobile */}
           {isMobileMenuOpen && (
             <div className="flex flex-col items-center gap-2 md:hidden">
-              <div className="w-full flex flex-col gap-4 py-2 bg-white rounded-2xl">
+              <div className="w-full flex flex-col gap-4 font-dmsans py-2 bg-white rounded-2xl">
                 {links.map((link, index) => (
                   <Link key={index} href={link.url} className="text-justify text-sm">{link.label}</Link>
                 ))}
@@ -69,7 +69,7 @@ const Navbar = () => {
         {/* Links - Mobile & Desktop */}
         {!isMobileMenuOpen && (
           <div
-            className={`flex-col md:flex-row wrapper flex md:flex gap-x-8 text-lg font-normal items-center ${isMobileMenuOpen ? "flex" : "hidden md:flex"
+            className={`flex-col md:flex-row wrapper font-dmsans capitalize  flex md:flex gap-x-8 text-md font-normal items-center ${isMobileMenuOpen ? "flex" : "hidden md:flex"
               }`}
           >
             {links.map((link, index) => (
