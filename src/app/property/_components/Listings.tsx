@@ -12,7 +12,7 @@ import {
 import { Slider } from "@/components/ui/slider";
 
 import React, { useState } from "react";
-import { PropertyCard } from "./PropertyListings";
+import { PropertyCard } from "./PropertyCard";
 import { X } from "lucide-react";
 
 const Listings = () => {

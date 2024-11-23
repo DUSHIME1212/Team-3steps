@@ -96,7 +96,7 @@ const Addlistings = () => {
             {imageUrl && (
               <div className="mt-4">
                 <p className="mb-2">Uploaded Image:</p>
-                <img src={imageUrl} alt="Uploaded" className="max-w-full h-auto" />
+                <img src={imageUrl} alt="Uploaded" className="max-w-full size-16 h-auto" />
               </div>
             )}
           </DialogHeader>
