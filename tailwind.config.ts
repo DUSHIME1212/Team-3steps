@@ -9,6 +9,12 @@ export default {
   ],
   theme: {
   	extend: {
+		fontFamily:{
+			Caveat:["Caveat", 'cursive'],
+			dmsans: ['DM Sans', 'sans-serif'],
+
+		},
+		
   		colors: {
 			darkBlue:"#3a0ca3",
   			background: 'hsl(var(--background))',

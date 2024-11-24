@@ -15,11 +15,11 @@ const Navbar = () => {
     { label: "About us", url: "/#about" },
     { label: "Listings", url: "/#listings" },
     { label: "Testimonies", url: "/#test" },
-    { label: "Blog", url: "/#blog" },
+    { label: "property", url: "/property" },
   ];
 
   return (
-    <nav className="flex flex-col w-full z-30 fixed bg-white shadow-lg">
+    <nav className="flex flex-col w-full z-30 h-48 fixed bg-gradient-to-b from-white from-40% to-transparent ">
       {/* Top */}
       <div className="w-full flex justify-between items-center text-white bg-blue-600 opacity-60 px-2 py-2 md:px-16 lg:px-32">
         <p className="uppercase text-sm">Kigali, RWANDA kk509st</p>
@@ -29,11 +29,14 @@ const Navbar = () => {
         </div>
       </div>
       <div className="flex justify-between px-8 items-center md:hidden lg:hidden">
-        <div className="h-16 w-16 relative">
-          <Image src={'/images/logo2.png'} alt="" className="object-contain" fill />
+        <div className="flex items-center">
+          <div className="h-16 w-16 relative">
+            <Image src={'/images/logo2.png'} alt="" className="object-contain" fill />
+          </div>
+          <p className="text-sm font-semibold">Hello Rwanda</p>
         </div>
         {/* Hamburger Menu Icon */}
-        <div className="flex items-center md:hidden">
+        <div className="flex items-center md:hidden space-x-2">
           <User />
           <Link href={"/login"}>Login</Link>
           <button onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}>
@@ -45,14 +48,17 @@ const Navbar = () => {
       {/* Main Navbar */}
       <div className="px-8 flex items-center md:px-16 lg:px-16 justify-between">
         <div className="flex flex-col items-center">
+          <div className="items-center hidden md:flex lg:flex">
+            <div className="h-24 w-24 relative">
+              <Image src={'/images/logo2.png'} alt="" className="object-contain" fill />
 
-          <div className="h-24 w-24 relative hidden md:flex lg:flex">
-            <Image src={'/logo3.png'} alt="" className="object-contain" fill />
+            </div>
+            <p className="p-3 font-semibold">Hello Rwanda</p>
           </div>
           {/* Action Buttons for Mobile */}
           {isMobileMenuOpen && (
-            <div className="flex flex-col items-center gap-2 md:hidden">
-              <div className="w-full flex flex-col gap-4 py-2 bg-white rounded-2xl">
+            <div className="flex max-w-max flex-col items-center gap-2 md:hidden">
+              <div className="flex flex-col gap-4 font-dmsans py-2 bg-white rounded-2xl">
                 {links.map((link, index) => (
                   <Link key={index} href={link.url} className="text-justify text-sm">{link.label}</Link>
                 ))}
@@ -68,7 +74,7 @@ const Navbar = () => {
         {/* Links - Mobile & Desktop */}
         {!isMobileMenuOpen && (
           <div
-            className={`flex-col md:flex-row wrapper flex md:flex gap-x-8 text-lg font-normal items-center ${isMobileMenuOpen ? "flex" : "hidden md:flex"
+            className={`flex-col md:flex-row wrapper font-dmsans capitalize  flex md:flex gap-x-8 text-md font-normal items-center ${isMobileMenuOpen ? "flex" : "hidden md:flex"
               }`}
           >
             {links.map((link, index) => (
