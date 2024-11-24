@@ -17,7 +17,6 @@ import { useAuth } from "../hooks/useAuth"; // Assuming these hooks are defined 
 
 export function DialogDemo() {
   const [step, setStep] = useState(1);
-  const [file, setFile] = useState<File | null>(null); // for picture upload
   const [formData, setFormData] = useState({
     firstName: '',
     lastName: '',
@@ -33,13 +32,6 @@ export function DialogDemo() {
   // Step navigation functions
   const nextStep = () => setStep((prev) => prev + 1);
   const prevStep = () => setStep((prev) => prev - 1);
-
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const fileInput = e.target.files?.[0];
-    if (fileInput) {
-      setFile(fileInput);
-    }
-  };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData((prev) => ({
@@ -220,15 +212,6 @@ export function DialogDemo() {
                     placeholder="Your password"
                     className="py-6"
                     onChange={handleInputChange}
-                  />
-                </div>
-                <div>
-                  <Label htmlFor="picture">Profile Picture</Label>
-                  <Input
-                    id="picture"
-                    type="file"
-                    onChange={handleFileChange}
-                    className="py-6"
                   />
                 </div>
                 <div className="flex justify-between">

@@ -3,6 +3,8 @@
 import { useAuth } from '@/hooks/useAuth';
 import { ArrowLeft, ArrowRight } from 'lucide-react';
 import Link from 'next/link'
+import { Button as SmallBtn } from 'antd'
+
 import React, { useState } from 'react'
 import { Button } from "@/components/ui/button";
 
@@ -84,7 +86,7 @@ const RegisterPage = () => {
                     First name
                   </label>
                   <input
-                    className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#3A0CA3]"
+                    className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600"
                     type="text"
                     name='firstName'
                     onChange={handleInputChange}
@@ -95,7 +97,7 @@ const RegisterPage = () => {
                     Last name
                   </label>
                   <input
-                    className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#3A0CA3]"
+                    className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600"
                     type="text"
                     name='lastName'
                     onChange={handleInputChange}
@@ -106,16 +108,16 @@ const RegisterPage = () => {
                     Phone number
                   </label>
                   <input
-                    className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#3A0CA3]"
+                    className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600"
                     type="text"
                     name='phoneNumber'
                     onChange={handleInputChange}
                     id="phoneNumber"
                     placeholder="+25018471378" />
                 </div>
-                <Button onClick={nextStep} className="w-full p-6 text-lg flex justify-center items-center">
+                <SmallBtn onClick={nextStep} className="w-full p-6 text-lg flex justify-center items-center">
                   Next <ArrowRight className="ml-2 h-6 w-6" />
-                </Button>
+                </SmallBtn>
               </>
             )}
             {step === 2 && (
@@ -125,7 +127,7 @@ const RegisterPage = () => {
                     Email address
                   </label>
                   <input
-                    className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#3A0CA3]"
+                    className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600"
                     type="email"
                     name='email'
                     onChange={handleInputChange}
@@ -138,19 +140,19 @@ const RegisterPage = () => {
                   </label>
                   <input
                     onChange={handleInputChange}
-                    className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#3A0CA3]"
+                    className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600"
                     type="password"
                     name='password'
                     id="password"
                     placeholder="********" />
                 </div>
                 <div className="flex justify-between">
-                  <Button onClick={prevStep} className="p-4 flex items-center">
+                  <SmallBtn onClick={prevStep} className="p-4 flex items-center">
                     <ArrowLeft className="h-6 w-6" /> Back
-                  </Button>
-                  <Button onClick={nextStep} className="p-4 flex items-center">
+                  </SmallBtn>
+                  <SmallBtn onClick={nextStep} className="p-4 flex items-center">
                     Next <ArrowRight className="h-6 w-6" />
-                  </Button>
+                  </SmallBtn>
                 </div>
               </>
             )}
@@ -161,7 +163,7 @@ const RegisterPage = () => {
                     Bio
                   </label>
                   <input
-                    className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#3A0CA3]"
+                    className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600"
                     type="text"
                     name='bio'
                     onChange={handleInputChange}
@@ -172,33 +174,26 @@ const RegisterPage = () => {
                     Birth date
                   </label>
                   <input
-                    className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#3A0CA3]"
+                    className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600"
                     type="date"
                     name='birthDate'
                     onChange={handleInputChange}
                     id="birthDate" />
                 </div>
-                <Button onClick={prevStep} className="p-4 flex items-center">
+                <SmallBtn onClick={prevStep} className="p-4 flex items-center">
                   <ArrowLeft className="h-6 w-6" /> Back
-                </Button>
+                </SmallBtn>
                 <Button onClick={handleRegister} className="w-full p-6 text-lg text-white">
                   Register
                 </Button>
-                <div className="text-center mt-4">
-                  <p className="text-gray-600 text-sm">
-                    Don't have an account? <Link href="register" className="text-[#3A0CA3]">Sign up</Link>
-                  </p>
-                </div>
-                <div className="text-center mt-4">
-                  <button
-                    className="w-full flex items-center justify-center bg-gray-200 hover:bg-gray-300 text-gray-800 font-semibold py-2 rounded-lg transition duration-300"
-                  >
-                    Authorize with Google
-                  </button>
-                </div>
               </>
             )}
           </form>
+          <div className="mt-8">
+            <p className="text-gray-600 text-sm">
+              Already have an account? <Link href="/login" className="text-blue-600">Login</Link>
+            </p>
+          </div>
         </div>
       </div>
 

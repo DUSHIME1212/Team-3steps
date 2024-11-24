@@ -16,7 +16,7 @@ const Addlistings = () => {
   return (
     <div>
       <Dialog>
-        <DialogTrigger>Add property</DialogTrigger>
+        <DialogTrigger className='py-2'>Add property</DialogTrigger>
         <DialogContent>
           <DialogHeader>
             <DialogTitle>Add a New Listing</DialogTitle>

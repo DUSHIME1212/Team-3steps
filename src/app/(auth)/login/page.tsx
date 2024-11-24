@@ -4,6 +4,7 @@
 import { useAuth } from '@/hooks/useAuth';
 import React, { useState } from 'react'
 import Link from 'next/link';
+import { Button } from '@/components/ui/button';
 
 const LoginPage = () => {
   const { login } = useAuth();
@@ -33,7 +34,7 @@ const LoginPage = () => {
       <div className='flex bg-white mx-auto mb-16 mt-44'>
 
         {/* Left section with blue background */}
-        <div className="hidden lg:flex flex-1 bg-[#3A0CA3] relative items-center justify-center">
+        <div className="hidden lg:flex flex-1 bg-blue-600 relative items-center justify-center">
           {/* Content */}
           <div className="text-white px-8 flex flex-col -mt-16">
             <h1 className="text-2xl truncate font-black mb-4">Welcome Back to Your Property Portal</h1>
@@ -58,7 +59,7 @@ const LoginPage = () => {
                 Email address
               </label>
               <input
-                className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#3A0CA3]"
+                className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600"
                 type="email"
                 name='email'
                 onChange={handleInputChange}
@@ -71,39 +72,32 @@ const LoginPage = () => {
                 Password
               </label>
               <input
-                className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#3A0CA3]"
+                className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600"
                 type="password"
                 onChange={handleInputChange}
                 id="password"
                 name='password'
                 placeholder="********"
               />
-              <a href="#" className="text-[#3A0CA3] text-sm mt-4 inline-block">Reset Password</a>
             </div>
-            <div className="flex items-center mb-6">
-              <input type="checkbox" id="remember" className="mr-2" />
-              <label htmlFor="remember" className="text-sm text-gray-600">Remember Password</label>
+            <div className="flex items-center justify-between mb-6">
+              <div>
+                <input type="checkbox" id="remember" className="mr-2" />
+                <label htmlFor="remember" className="text-sm text-gray-600">Remember Password</label>
+              </div>
+              <div>
+                <Link href="#" className="text-blue-600 text-sm inline-block">Reset Password</Link>
+              </div>
             </div>
-            <button
-              onClick={handleLogin}
-              type="submit"
-              className="w-full bg-[#3A0CA3] hover:bg-[#3A0CA3] text-white font-bold py-2 rounded-lg transition duration-300"
-            >
+            <Button onClick={handleLogin} className="w-full p-6 text-lg text-white">
               Login
-            </button>
-            <div className="text-center mt-4">
-              <p className="text-gray-600 text-sm">
-                Don't have an account? <Link href="register" className="text-[#3A0CA3]">Sign up</Link>
-              </p>
-            </div>
-            <div className="text-center mt-4">
-              <button
-                className="w-full flex items-center justify-center bg-gray-200 hover:bg-gray-300 text-gray-800 font-semibold py-2 rounded-lg transition duration-300"
-              >
-                Authorize with Google
-              </button>
-            </div>
+            </Button>
           </form>
+          <div className="mt-8">
+            <p className="text-gray-600 text-sm">
+              Don't have an account? <Link href="register" className="text-blue-600">Sign up</Link>
+            </p>
+          </div>
         </div>
       </div>
     </div>
