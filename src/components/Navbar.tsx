@@ -6,6 +6,7 @@ import { Home, User, Menu, X } from "@geist-ui/icons";
 import { DialogDemo } from "./Model";
 import Addlistings from "./Addlistings";
 import Image from "next/image";
+import { Button } from "./ui/button";
 // import { Tabs } from "@geist-ui/core";
 
 const Navbar = () => {
@@ -83,10 +84,11 @@ const Navbar = () => {
 
         {/* Action Buttons */}
         <div className="hidden md:flex">
-          <div className="w-full flex gap-2 items-center">
-            <User />
-            <DialogDemo />
-          </div>
+          <Button variant={"link"} className="w-full flex gap-2 items-center" asChild>
+            <Link href="/login">
+              <User /> Log in
+            </Link>
+          </Button>
           <div className="flex items-center w-fit min-w-[156px] justify-center px-2 bg-darkBlue rounded-xl text-white gap-2">
             <Home />
             <Addlistings />

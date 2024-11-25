@@ -1,44 +1,39 @@
-import type { Metadata } from "next";
-import localFont from "next/font/local";
-import "./globals.css";
-import Navbar from "@/components/Navbar";
-import { AntdRegistry } from "@ant-design/nextjs-registry";
-import Footer from "@/components/Footer";
+import Navbar from '@/components/Navbar'
+import './globals.css'
+import type { Metadata } from 'next'
+import { Inter } from 'next/font/google'
+import Footer from '@/components/Footer'
 
-const geistSans = localFont({
-  src: "./fonts/GeistVF.woff",
-  variable: "--font-geist-sans",
-  weight: "100 900",
-});
-const geistMono = localFont({
-  src: "./fonts/GeistMonoVF.woff",
-  variable: "--font-geist-mono",
-  weight: "100 900",
-});
+const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
-  title: "3steps",
-  description:
-    "Welcome to 3steps, a Next.js project designed to assist individuals in finding their perfect home. This project leverages the power of Next.js to provide a seamless user experience, ensuring that users can easily navigate through the website and find the properties that best suit their needs.",
-    icons: [{ rel: "icon", url: "/3steps.png" }],
-};
+  title: 'Property Listings',
+  description: 'Find your dream home',
+}
 
 export default function RootLayout({
   children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+}: {
+  children: React.ReactNode
+}) {
   return (
     <html lang="en">
-      <body
-        className={`font-dmsans scroll-smooth antialiased`}
-      >
-        <nav>
-          <Navbar />
-        </nav>
-        <AntdRegistry>{children}</AntdRegistry>
-        <Footer />
+      <head>
+        <link
+          rel="stylesheet"
+          href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
+          integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
+          crossOrigin=""
+        />
+      </head>
+      <body className={inter.className}>
+        <header>
+          <Navbar/>
+        </header>
+        {children}
+        <Footer/>
       </body>
     </html>
-  );
+  )
 }
+

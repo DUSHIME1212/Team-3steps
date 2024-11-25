@@ -7,8 +7,11 @@ import { Label } from "@/components/ui/label";
 import { Check, Eye, EyeOff, X } from "lucide-react";
 import { useMemo, useState } from "react";
 
-export default function InputDemo(
-) {
+interface InputDemoProps extends React.HTMLAttributes<HTMLDivElement> {
+  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
+}
+
+export default function InputDemo({ onChange, ...props }: InputDemoProps) {
   const [password, setPassword] = useState("");
   const [isVisible, setIsVisible] = useState<boolean>(false);
 
@@ -50,18 +53,21 @@ export default function InputDemo(
   };
 
   return (
-    <div>
+    <div {...props}>
       {/* Password input field with toggle visibility button */}
       <div className="space-y-2">
         <Label htmlFor="input-51">Input with password strength indicator</Label>
         <div className="relative">
           <Input
-            id="input-51"
+            id="password"
             className="pe-9"
             placeholder="Password"
             type={isVisible ? "text" : "password"}
             value={password}
-            onChange={(e) => setPassword(e.target.value)}
+            onChange={(e) => {
+              setPassword(e.target.value);
+              onChange?.(e);
+            }}
             aria-invalid={strengthScore < 4}
             aria-describedby="password-strength"
           />
@@ -97,7 +103,6 @@ export default function InputDemo(
         ></div>
       </div>
 
-      {/* Password strength description */}
       <p id="password-strength" className="mb-2 text-sm font-medium text-foreground">
         {getStrengthText(strengthScore)}. Must contain:
       </p>
