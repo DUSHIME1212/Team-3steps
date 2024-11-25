@@ -11,7 +11,7 @@ interface PropertyCardProps {
   image: string
 }
 
-export function PropertyCard({ id, title, price, bedrooms, bathrooms, area, image }: PropertyCardProps) {
+export function PropertyCard({ title, price, bedrooms, bathrooms, area, image }: PropertyCardProps) {
   return (
     <div className="bg-white shadow-lg rounded-lg  overflow-hidden">
       <Image src={image} alt={title} width={300} height={200} className="w-full h-48 object-cover" />
