@@ -20,7 +20,7 @@ export function PropertyCard({id, title, price, bedrooms, bathrooms, area, image
         <h3 className="text-lg font-semibold mb-2">{title}</h3>
         <p className="text-gray-600 mb-2">{bedrooms} beds • {bathrooms} baths • {area} sqft</p>
         <p className="text-xl font-bold mb-4">{new Intl.NumberFormat('rw-RW', { style: 'currency', currency: 'RWF', maximumFractionDigits: 0 }).format(price)}</p>
-        <Button className="w-full bg-darkBlue" asChild>
+        <Button className="w-full bg-indigo-600" asChild>
           <Link href={`/property/${id}`}>View Details</Link>
         </Button>
       </div>

@@ -13,8 +13,10 @@ import {
 } from "@/components/ui/select";
 import { Button } from "./ui/button";
 import { Filter, Search } from "@geist-ui/icons";
+import { useRouter } from "next/navigation";
 
 const Hero = () => {
+  const router = useRouter()
   return (
     <div className="min-h-svh flex flex-col items-center px-8 md:px-16 lg:px-32 justify-center relative">
       <div className="hidden size-full md:flex lg:flex max-h-screen max-w-screen-md absolute -z-50 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-gradient-to-t from-darkBlue/20 to-40% to-transparent rounded-full" />
@@ -74,7 +76,7 @@ const Hero = () => {
                   <SelectItem value="5">5</SelectItem>
                 </SelectContent>
               </Select>
-              <Button variant={"outline"} className="py-6">
+              <Button variant={"outline"} onClick={() => router.push("/property")} className="py-6">
                 <Filter /> Advance Search
               </Button>
               <Button size={"lg"} className="rounded-full  py-6">
