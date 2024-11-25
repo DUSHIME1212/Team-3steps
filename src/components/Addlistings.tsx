@@ -10,7 +10,6 @@ import {
   DialogTrigger,
   DialogFooter,
 } from "@/components/ui/dialog"
-import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "@/components/ui/select"
 import { uploadToCloudinary } from '@/app/api/actions/upload'
@@ -33,8 +32,9 @@ const Addlistings = () => {
     } else {
       setImageUrl(result.url)
     }
-
     setUploading(false)
+    console.log(uploading);
+
   }
 
   return (
@@ -44,10 +44,10 @@ const Addlistings = () => {
         <DialogContent>
           <DialogHeader>
             <DialogTitle>Add a New Listing</DialogTitle>
-            <DialogDescription className='py-4'> 
+            <DialogDescription className='py-4'>
               Please fill out the form below to add a new listing.
             </DialogDescription>
-            <form className='flex flex-col gap-y-6' onSubmit={handleSubmit}>
+            <form className='flex flex-col gap-y-6' onChange={handleSubmit}>
               <Input placeholder="Kigali, Rwanda" type="text" className="py-6" name="location" />
               <Select>
                 <SelectTrigger className="w-full">
@@ -73,7 +73,7 @@ const Addlistings = () => {
                   <SelectItem value="5">5</SelectItem>
                 </SelectContent>
               </Select>
-              <div className="w-full py-9 bg-gray-50 rounded-2xl border border-gray-300 gap-3 grid border-dashed">
+              <div onChange={() => handleSubmit} className="w-full py-9 bg-gray-50 rounded-2xl border border-gray-300 gap-3 grid border-dashed">
                 <div className="grid gap-1">
                   <svg className="mx-auto" width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <g id="File">
@@ -92,7 +92,7 @@ const Addlistings = () => {
                   </div>
                 </div>
               </div>
-              <Button type="submit" disabled={uploading} variant="default">Pay via Momo</Button>
+              {/* <Button type="submit" disabled={uploading} variant="default">Pay via Momo</Button> */}
             </form>
             {imageUrl && (
               <div className="mt-4">

@@ -1,18 +1,21 @@
-/* eslint-disable react/no-unescaped-entities */
-/* eslint-disable @next/next/no-img-element */
-'use client'
-import { useAuth } from '@/hooks/useAuth';
-import React, { useState } from 'react'
-import Link from 'next/link';
-import { Button } from '@/components/ui/button';
-
-const LoginPage = () => {
-  const { login } = useAuth();
+"use client";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import React, { useState } from "react";
+import { useAuth } from "@/hooks/useAuth";
+import Image from "next/image";
+import Link from "next/link";
+import { ToastContainer } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
+import { useRouter } from "next/navigation";
+const Page = () => {
   const [formData, setFormData] = useState({
-    email: '',
-    password: ''
+    email: "",
+    password: "",
   });
-
+  const { login } = useAuth();
+  const router = useRouter();
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData((prev) => ({
       ...prev,
@@ -20,88 +23,97 @@ const LoginPage = () => {
     }));
   };
 
-  const handleLogin = async () => {
-    const authData = {
-      email: formData.email,
-      password: formData.password,
+  const handleSubmit = async () => {
+    try {
+      await login({ email: formData.email, password: formData.password });
+      setTimeout(() => {
+        router.push("/property");
+      }, 2000);
+    } catch (error) {
+      console.error("Login error:", error);  // For debugging
     }
-    await login(authData);
-  }
+  };
 
   return (
-    <div className="h-screen bg-gray-100 flex">
+    <div className="">
+      <ToastContainer position="top-right" />
 
-      <div className='flex bg-white mx-auto mb-16 mt-44'>
-
-        {/* Left section with blue background */}
-        <div className="hidden lg:flex flex-1 bg-blue-600 relative items-center justify-center">
-          {/* Content */}
-          <div className="text-white px-8 flex flex-col -mt-16">
-            <h1 className="text-2xl truncate font-black mb-4">Welcome Back to Your Property Portal</h1>
-            <p>Access your account to explore listings, manage properties, and connect with your future home.</p>
-          </div>
-          <div className='p-8'>
-            {/* Triangle - Three rectangles forming a triangle */}
-            <div className="absolute w-96 h-16 bg-white opacity-20 transform rotate-45 top-32 right-0"></div>
-            <div className="absolute w-96 h-16 bg-white opacity-20 transform -rotate-45 bottom-42 right-0"></div>
-
-            <div className="absolute w-96 h-16 bg-white opacity-15 transform -rotate-45 bottom-36 right-0"></div>
-
-          </div>
-        </div>
-
-        {/* Right section with login form */}
-        <div className="m-10 p-14 max-w-xl bg-white w-full">
-          <h2 className="text-2xl font-semibold mb-6">Login</h2>
-          <form className='space-y-8'>
-            <div className="mb-4">
-              <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="email">
-                Email address
-              </label>
-              <input
-                className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600"
-                type="email"
-                name='email'
-                onChange={handleInputChange}
-                id="email"
-                placeholder="name@mail.com"
-              />
-            </div>
-            <div className="mb-6">
-              <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="password">
-                Password
-              </label>
-              <input
-                className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600"
-                type="password"
-                onChange={handleInputChange}
-                id="password"
-                name='password'
-                placeholder="********"
-              />
-            </div>
-            <div className="flex items-center justify-between mb-6">
-              <div>
-                <input type="checkbox" id="remember" className="mr-2" />
-                <label htmlFor="remember" className="text-sm text-gray-600">Remember Password</label>
-              </div>
-              <div>
-                <Link href="#" className="text-blue-600 text-sm inline-block">Reset Password</Link>
-              </div>
-            </div>
-            <Button onClick={handleLogin} className="w-full p-6 text-lg text-white">
-              Login
-            </Button>
-          </form>
-          <div className="mt-8">
-            <p className="text-gray-600 text-sm">
-              Don't have an account? <Link href="register" className="text-blue-600">Sign up</Link>
+      <div className="min-h-screen w-screen pt-16 relative">
+        <Image src={"/image.png"} alt="" fill className="object-cover -z-0" />
+        <form
+          onSubmit={(e) => e.preventDefault()}
+          className="gap-6 rounded-xl  z-10 flex min-w-[512px] items-start bg-white p-16 absolute w-96 left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2  justify-center flex-col"
+        >
+          <div className="w-full text-start mb-4">
+            <h1 className="text-5xl font-bold mb-2">Welcome back!</h1>
+            <p className="text-gray-600">
+              Please enter your details to sign in
             </p>
           </div>
-        </div>
+
+          <div className="w-full">
+            <Label htmlFor="email">Email</Label>
+            <Input
+              id="email"
+              name="email"
+              value={formData.email}
+              placeholder="example@example.com"
+              className="col-span-3 py-6"
+              onChange={handleInputChange}
+              required
+            />
+          </div>
+
+          <div className="w-full">
+            <Label htmlFor="password">Password</Label>
+            <Input
+              id="password"
+              name="password"
+              type="password"
+              value={formData.password}
+              placeholder="Enter your password"
+              className="col-span-3 py-6"
+              onChange={handleInputChange}
+              required
+            />
+          </div>
+
+          <div className="w-full flex justify-between items-center mb-2">
+            <div className="flex items-center">
+              <input type="checkbox" id="remember" className="mr-2" />
+              <label htmlFor="remember" className="text-sm text-gray-600">
+                Remember me
+              </label>
+            </div>
+            <Link
+              href="/forgot-password"
+              className="text-sm text-indigo-600 hover:text-indigo-800"
+            >
+              Forgot password?
+            </Link>
+          </div>
+
+          <div className="w-full">
+            <Button type="submit" onClick={handleSubmit} className="p-6 w-full text-lg">
+              Sign in
+            </Button>
+          </div>
+
+          <div className="w-full text-center mt-4">
+            <p className="text-gray-600">
+              Don&apos;t have an account?{" "}
+              <Link
+                href="/signup"
+                className="text-indigo-600 hover:text-indigo-800 font-medium"
+              >
+                Sign up
+              </Link>
+            </p>
+          </div>
+        </form>
       </div>
     </div>
   );
-}
+};
 
-export default LoginPage
+export default Page;

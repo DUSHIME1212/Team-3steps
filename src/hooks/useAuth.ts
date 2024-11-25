@@ -41,7 +41,8 @@ export const useAuth = () => {
             });
 
             // If the registration is successful, show success message
-            toast.success(response.data.message || 'User Logged in successfully'); // Success message
+            toast.success(response.data.message || 'User Logged in successfully');
+            console.log("Toast should appear: success");
             return response.data; // Return the response data
         } catch (error: unknown) {
             let errorMessage = 'Login failed, please try again.';
