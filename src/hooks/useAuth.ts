@@ -1,9 +1,9 @@
 import { toast } from 'react-toastify';
 import axios from 'axios';
-
 export const useAuth = () => {
     const API_URL = process.env.NEXT_PUBLIC_API_URL;
     // Register function
+    let step3token = null;
     const register = async (userData: object) => {
         try {
             // Make the API call to register the user
@@ -39,10 +39,13 @@ export const useAuth = () => {
                     'Content-Type': 'application/json', // Sending data as JSON
                 },
             });
-
+            // This code runs only in the browser
+            sessionStorage.setItem('3step-token', response.data.token);
+            step3token = sessionStorage.getItem('3step-token');
             // If the registration is successful, show success message
             toast.success(response.data.message || 'User Logged in successfully');
             console.log("Toast should appear: success");
+
             return response.data; // Return the response data
         } catch (error: unknown) {
             let errorMessage = 'Login failed, please try again.';
@@ -63,5 +66,5 @@ export const useAuth = () => {
         }
     };
 
-    return { register, login };
+    return { register, login, step3token };
 };

@@ -1,15 +1,20 @@
 "use client";
 /* eslint-disable @next/next/no-img-element */
 import Link from "next/link";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Home, User, Menu, X } from "@geist-ui/icons";
 import Addlistings from "./Addlistings";
 import Image from "next/image";
-import { Button } from "./ui/button";
+import { Button } from "antd";
 // import { Tabs } from "@geist-ui/core";
 
 const Navbar = () => {
+  const [token, setToken] = useState<string | null>(null);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  // This code runs only in the browser
+  useEffect(() => {
+    setToken(sessionStorage.getItem('3step-token'));
+  }, [token])
 
   const links = [
     { label: "Home", url: "/#home" },
@@ -38,8 +43,19 @@ const Navbar = () => {
         </div>
         {/* Hamburger Menu Icon */}
         <div className="flex items-center md:hidden space-x-2">
-          <User />
-          <Link href={"/login"}>Login</Link>
+          {token !== null ? (
+            <div className="flex space-x-2 px-4">
+              <User />
+              <Link onClick={() => {
+                sessionStorage.removeItem("3step-token")
+                setToken(null)
+              }} href={"/"}>Logout</Link>
+            </div>
+          ) : (
+            <Button className="border-indigo-600 text-indigo-600">
+              <Link href={"/login"} className="text-indigo-600">Login</Link>
+            </Button>
+          )}
           <button onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}>
             {isMobileMenuOpen ? <X /> : <Menu />}
           </button>
@@ -88,12 +104,21 @@ const Navbar = () => {
 
 
         {/* Action Buttons */}
-        <div className="hidden md:flex">
-          <Button variant={"link"} className="w-full flex gap-2 items-center" asChild>
-            <Link href="/login">
-              <User /> Log in
-            </Link>
-          </Button>
+        <div className="hidden md:flex items-center">
+          {token !== null ? (
+            <div className="flex space-x-2 px-4">
+              <User />
+              <Link onClick={() => {
+                sessionStorage.removeItem("3step-token");
+                setToken(null);
+              }} href={"/"}>Logout</Link>
+            </div>
+          ) : (
+            <Button className="border-indigo-600 text-indigo-600 mx-2">
+              <Link href={"/login"} className="text-indigo-600">Login</Link>
+            </Button>
+          )}
+
           <div className="flex items-center w-fit min-w-[156px] justify-center px-2 bg-indigo-600 rounded-xl text-white gap-2">
             <Home />
             <Addlistings />

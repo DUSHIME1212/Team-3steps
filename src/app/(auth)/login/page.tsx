@@ -37,7 +37,6 @@ const Page = () => {
   return (
     <div className="">
       <ToastContainer position="top-right" />
-
       <div className="min-h-screen w-screen pt-16 relative">
         <Image src={"/image.png"} alt="" fill className="object-cover -z-0" />
         <form
