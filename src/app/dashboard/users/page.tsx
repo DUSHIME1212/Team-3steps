@@ -8,6 +8,7 @@ import UserForm from '@/components/UserForm';
 import DeleteModal from '@/components/DeleteModal';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { Button } from '@/components/ui/button';
 
 const UsersTable = () => {
     // State for managing modal visibility and selected user
@@ -104,10 +105,15 @@ const UsersTable = () => {
 
     return (
         <DashboardLayout>
-
             <ToastContainer position="top-right" />
             <div className='mt-4'>
-                <h1 className="text-2xl font-semibold mb-4">Users</h1>
+                <div className='flex justify-between'>
+                    <h1 className="text-2xl font-semibold mb-4">Users</h1>
+                    <Button onClick={() => {
+                        setModalMode("create")
+                        setModalOpen(true)
+                    }}>Add User</Button>
+                </div>
                 <div className="overflow-auto bg-white rounded-lg shadow p-6">
                     <table className="min-w-full text-left border-collapse">
                         <thead className="bg-gray-200">

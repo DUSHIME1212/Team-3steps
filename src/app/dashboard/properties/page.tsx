@@ -7,6 +7,7 @@ import { ApprovalStatus, Currency, ListingType, PaymentStatus, PropertyCondition
 import { Controller, useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { Button } from '@/components/ui/button';
 
 const PropertiesPage = () => {
     const [properties, setProperties] = useState<PropertyPost[]>([]);
@@ -144,10 +145,12 @@ const PropertiesPage = () => {
 
     return (
         <DashboardLayout>
-            <h1 className="text-2xl font-semibold mb-4">Properties</h1>
-            <button onClick={() => setIsCreateModalOpen(true)} className="bg-green-500 text-white p-2 rounded">
-                Add New Property
-            </button>
+            <div className='flex justify-between'>
+                <h1 className="text-2xl font-semibold mb-4">Properties</h1>
+                <Button onClick={() => {
+                    setIsCreateModalOpen(true)
+                }}>Add New Property</Button>
+            </div>
             <div className="overflow-auto bg-white rounded-lg shadow p-6">
                 <table className="min-w-full text-left border-collapse">
                     <thead className="bg-gray-200">
