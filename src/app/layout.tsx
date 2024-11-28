@@ -1,8 +1,7 @@
-import Navbar from '@/components/Navbar'
 import './globals.css'
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
-import Footer from '@/components/Footer'
+import QueryProvider from '@/components/QueryProvider'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -26,13 +25,11 @@ export default function RootLayout({
           crossOrigin=""
         />
       </head>
-      <body className={inter.className}>
-        <header>
-          <Navbar/>
-        </header>
-        {children}
-        <Footer/>
-      </body>
+      <QueryProvider>
+        <body className={inter.className}>
+          {children}
+        </body>
+      </QueryProvider>
     </html>
   )
 }
