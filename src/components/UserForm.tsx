@@ -1,10 +1,10 @@
-import { useForm } from 'react-hook-form';
+import { Controller, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { User, userSchema } from '@/types/types';
 import { Button } from './ui/button';
 import { Button as CloseButton } from 'antd'
-import { Dispatch, SetStateAction } from 'react';
+import { Dispatch, SetStateAction, useEffect } from 'react';
 import { MdClose } from 'react-icons/md';
 
 type UserFormValues = z.infer<typeof userSchema>;
@@ -16,20 +16,30 @@ interface UserFormProps {
     defaultValues?: Partial<User>; // For edit form
 }
 
-const UserForm: React.FC<UserFormProps> = ({ onSubmit, defaultValues, mode, seModalOpen }) => {
+const UserForm: React.FC<UserFormProps> = ({ onSubmit, defaultValues, mode, seModalOpen, }) => {
     const {
         register,
         handleSubmit,
         formState: { errors },
+        reset,
+        control
     } = useForm<UserFormValues>({
         resolver: zodResolver(userSchema),
         defaultValues
     });
 
+    console.log('Validation errors:', errors);
+    // Watch for changes in defaultValues (selectedUser)
+    useEffect(() => {
+        if (defaultValues) {
+            reset(defaultValues); // Reset the form with new values
+        }
+    }, [defaultValues, reset]);
+
     return (
         <div>
             <div className='flex justify-between'>
-                {mode === 'create' ? <p className='text-xl font-bold'>Create a user</p> : <p className='text-xl font-bold'>Edit a user</p>}
+                {mode === 'create' ? <p className='text-xl font-bold'>Create User</p> : <p className='text-xl font-bold'>Edit User</p>}
                 <MdClose size={30} onClick={() => seModalOpen(false)} className='cursor-pointer' />
             </div>
             <form onSubmit={handleSubmit(onSubmit)} className="max-w-lg mx-auto p-4">
@@ -95,8 +105,23 @@ const UserForm: React.FC<UserFormProps> = ({ onSubmit, defaultValues, mode, seMo
                     />
                     {errors.birthDate && <p className="text-red-500 text-sm">{errors.birthDate.message}</p>}
                 </div>
+                <div>
+                    <label className="block mb-2">Bio</label>
+                    <Controller
+                        name="bio"
+                        control={control}
+                        render={({ field }) => (
+                            <textarea
+                                {...field}
+                                className="w-full mb-4 p-2 border rounded"
+                                placeholder="Developer"
+                            />
+                        )}
+                    />
+                    {errors.bio && <p className="text-red-500 text-sm">{errors.bio.message}</p>}
+                </div>
                 {/* Submit Button */}
-                <div className='flex justify-between items-center mt-8'>
+                <div className='flex justify-between items-center mt-2'>
                     <div>
                         <Button className='px-10 py-4' size='lg' >
                             {mode === 'edit' ? 'Update User' : 'Create User'}

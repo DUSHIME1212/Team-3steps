@@ -11,12 +11,12 @@ const PageHeader: React.FC<PageHeaderProps> = () => {
     const pathSegments = pathname.split('/').filter(Boolean);
 
     return (
-        <div className="bg-white p-4 mb-4">
+        <div className="bg-white p-4 mb-4 border-b-2 border-gray-100">
             {/* Breadcrumb Navigation */}
             <nav className="text-sm mb-2 text-gray-500">
                 <ul className="flex space-x-2">
                     <li>
-                        <Link href="/dashboard" className="hover:text-blue-500">Dashboard</Link>
+                        <Link href="/dashboard" className="hover:text-blue-500">Home</Link>
                     </li>
                     {pathSegments.map((segment, index) => (
                         <li key={index} className="flex items-center">

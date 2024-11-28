@@ -1,129 +1,155 @@
 'use client'
-import { useEffect, useState } from 'react';
-import { useReactTable, getCoreRowModel, ColumnDef, flexRender } from '@tanstack/react-table';
+import { useState } from 'react';
+import { useReactTable, getCoreRowModel, flexRender, createColumnHelper, Row } from '@tanstack/react-table';
 import DashboardLayout from '../../../components/DashboardLayout';  // Assuming your layout component is here
-import axios from 'axios';
-import { Row } from '@tanstack/react-table';
-import { PropertyPost } from '@/types/types';
-import { useForm, Controller } from 'react-hook-form';
-import { toast } from 'react-toastify';
-
-// Define Category interface
-interface Category {
-    id: number;
-    name: string;
-    description: string;
-    parentId?: number;
-    posts: PropertyPost[];
-    createdAt: string;
-    updatedAt: string;
-    subcategories: Category[];
-    parent?: Category;
-}
+import { Category, CategoryFormValues } from '@/types/types';
+import { Button } from '@/components/ui/button';
+import { createCategoryApiCall, deleteCategoryApiCall, updateCategoryApiCall, useGetCategories } from '@/utils/api';
+import AddCategoryForm from '@/components/AddCategoryForm';
+import DeleteModal from '@/components/DeleteModal';
+import { MdDelete, MdEdit } from 'react-icons/md';
+import { TbDots } from 'react-icons/tb';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const CategoriesPage = () => {
-    const [categories, setCategories] = useState<Category[]>([]);
-    const [isEditModalOpen, setIsEditModalOpen] = useState(false);
-    const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
-    const [categoryToEdit, setCategoryToEdit] = useState<Category | null>(null);
-    const [categoryToDelete, setCategoryToDelete] = useState<Category | null>(null);
+    const [selectedCategory, setSelectedCategory] = useState<Partial<Category> | null>(null);
+    const [isDeleteModalOpen, setDeleteModalOpen] = useState(false);
+    const [modalMode, setModalMode] = useState<'create' | 'edit'>('create');
+    const [isModalOpen, setModalOpen] = useState<boolean>(false);
+    const [isOpen, setIsOpen] = useState(false);
+    const [selectedId, setSelectedId] = useState<number>();
 
-    // Initialize react-hook-form
-    const { control, handleSubmit } = useForm<Category>({
-        defaultValues: {
-            name: '',
-            description: ''
+    const toggleDropdown = (id: number) => {
+        setSelectedId(id)
+        setIsOpen((prev) => !prev); // Toggle state
+    };
+    // Close modal
+    const handleCloseModal = () => {
+        setModalOpen(false);
+        setSelectedCategory(null);
+    };
+
+    const { data: categories, isLoading, refetch } = useGetCategories()
+
+    // Handle form submission (create or update)
+    const handleFormSubmit = async (data: CategoryFormValues) => {
+        if (modalMode === 'create') {
+            await createCategoryApiCall(data);
+        } else {
+            await updateCategoryApiCall(selectedCategory?.id as number, data);
         }
-    });
-
-    const handleEditCategory = (row: Row<Category>) => {
-        setCategoryToEdit(row.original);
-        setIsEditModalOpen(true);
+        handleCloseModal();
+        refetch();
     };
 
-    const handleDeleteCategory = (row: Row<Category>) => {
-        setCategoryToDelete(row.original);
-        setIsDeleteModalOpen(true);
+    const handleEditClick = (info: Row<Category>) => {
+        setSelectedCategory(info.original)
+        setModalMode("edit")
+        setModalOpen(true)
     };
 
-    // Handle edit form submission
-    const handleSaveEdit = (data: Category) => {
-        if (categoryToEdit) {
-            axios.put(`/api/categories/${categoryToEdit.id}`, data)
-                .then(() => {
-                    toast.success('Category updated successfully!');
-                    setIsEditModalOpen(false);
-                    setCategories(categories.map(category =>
-                        category.id === categoryToEdit.id ? { ...category, ...data } : category
-                    ));
-                })
-                .catch(() => {
-                    toast.error('Failed to update category.');
-                });
-        }
+    const handleDeleteClick = (info: Row<Category>) => {
+        setSelectedCategory(info.original)
+        setDeleteModalOpen(true)
     };
 
-    // Handle delete confirmation
-    const handleDeleteConfirm = () => {
-        if (categoryToDelete) {
-            axios.delete(`/api/categories/${categoryToDelete.id}`)
-                .then(() => {
-                    toast.success('Category deleted successfully!');
-                    setCategories(categories.filter(category => category.id !== categoryToDelete.id));
-                    setIsDeleteModalOpen(false);
-                })
-                .catch(() => {
-                    toast.error('Failed to delete category.');
-                });
-        }
-    };
+
+    const columnHelper = createColumnHelper<Category>();
 
     // Define columns for Categories table
-    const categoryColumns: ColumnDef<Category>[] = [
-        {
-            accessorKey: 'name',
-            header: 'Category Name',
-        },
-        {
-            accessorKey: 'description',
-            header: 'Description',
-        },
-        {
-            accessorKey: 'parentId',
-            header: 'Parent Category',
-            cell: ({ cell }) => {
-                const parentCategory = cell.getValue() ? `Parent ID: ${cell.getValue()}` : 'No Parent';
+    const categoryColumns = [
+        columnHelper.accessor('name', {
+            header: () => <span>Name</span>,
+            cell: (info) => (info.getValue() ? info.getValue() : '-'),
+            footer: (info) => info.column.id,
+        }),
+
+        columnHelper.accessor('description', {
+            header: () => <span>Description</span>,
+            cell: (info) => <p className='truncate'>{info.getValue() ? info.getValue() : '-'}</p>,
+            footer: (info) => info.column.id,
+        }),
+
+        columnHelper.accessor('parentId', {
+            header: () => <span>Parent Category</span>,
+            cell: (info) => {
+                const parentCategory = info.getValue() ? `Parent ID: ${info.getValue()}` : 'No Parent';
                 return <span>{parentCategory}</span>;
             },
-        },
-        {
-            id: 'actions',
-            header: 'Actions',
-            cell: ({ row }) => (
-                <div className="flex space-x-2">
-                    <button onClick={() => handleEditCategory(row)} className="bg-blue-500 text-white px-4 py-2 rounded">Edit</button>
-                    <button onClick={() => handleDeleteCategory(row)} className="bg-red-500 text-white px-4 py-2 rounded">Delete</button>
-                </div>
-            ),
-        },
+            footer: (info) => info.column.id,
+        }),
+
+        /*
+                columnHelper.accessor('parentId', {
+                    header: () => <span>Parent Category</span>,
+                    cell: (info) => {
+                        const parentCategory = (info.getValue() && selectedId === info.row.original.id) ? `Parent ID: ${parentCat} ` : 'No Parent';
+                        return (
+                            <>{parentCategory && (
+                                <>
+                                    <MdViewColumn className='cursor-pointer' onClick={() => setSelectedId(info.row.original.id)} />
+                                    <span>{parentCategory}</span>
+                                </>
+                            )}
+                            </>
+                        );
+                    },
+                    footer: (info) => info.column.id,
+                }),
+        */
+        columnHelper.accessor('id', {
+            header: () => <span>Actions</span>,
+            cell: (info) => (
+                <>
+                    <TbDots className='cursor-pointer' onClick={() => toggleDropdown(info.row.original.id)} />
+                    {isOpen && selectedId === info.row.original.id && (
+                        <div className="absolute right-12 py-2 mt-2 w-32 bg-white border rounded-lg shadow-lg z-10">
+                            <button
+                                onClick={() => handleEditClick(info.row)}
+                                className="gap-x-2 flex items-center w-full px-4 py-2 text-left text-gray-800 hover:bg-gray-100"
+                            >
+                                <MdEdit />   Edit
+                            </button>
+                            <button
+                                onClick={() => handleDeleteClick(info.row)}
+                                className="w-full gap-x-2 flex items-center px-4 py-2 text-left text-red-600 hover:bg-gray-100"
+                            >
+                                <MdDelete /> Delete
+                            </button>
+                        </div>
+                    )}
+                </>),
+            footer: (info) => info.column.id,
+        }),
     ];
 
-    // Fetch categories from API
-    useEffect(() => {
-        axios.get('/api/categories')
-            .then(response => setCategories(response.data))
-            .catch(error => console.error('Error fetching categories:', error));
-    }, []);
-
+    // Create table instance
     const table = useReactTable({
-        data: categories,
+        data: categories?.data || [],
         columns: categoryColumns,
         getCoreRowModel: getCoreRowModel(),
     });
 
+    const handleDeleteConfirm = async () => {
+        await deleteCategoryApiCall(selectedCategory?.id as number)
+        refetch()
+        setDeleteModalOpen(false);
+        setSelectedCategory(null);
+    };
+    // Handling the loading and error states
+    if (isLoading) return <div>Loading...</div>;
+
     return (
         <DashboardLayout>
-            <h1 className="text-2xl font-semibold mb-4">Categories</h1>
+            <ToastContainer position="top-right" />
+            <div className='flex justify-between'>
+                <h1 className="text-2xl font-semibold mb-4">Categories</h1>
+                <Button onClick={() => {
+                    setModalMode("create")
+                    setModalOpen(true)
+                }}>Add Category</Button>
+            </div>
             <div className="overflow-auto bg-white rounded-lg shadow p-6">
                 <table className="min-w-full text-left border-collapse">
                     <thead className="bg-gray-200">
@@ -141,7 +167,7 @@ const CategoriesPage = () => {
                         {table.getRowModel().rows.map(row => (
                             <tr key={row.id} className="hover:bg-gray-100">
                                 {row.getVisibleCells().map(cell => (
-                                    <td key={cell.id} className="px-4 py-2 border-b">
+                                    <td key={cell.id} className="px-4 py-5 border-b">
                                         {flexRender(cell.column.columnDef.cell, cell.getContext())}
                                     </td>
                                 ))}
@@ -150,57 +176,37 @@ const CategoriesPage = () => {
                     </tbody>
                 </table>
             </div>
-            {isEditModalOpen && categoryToEdit && (
-                <div className="fixed inset-0 bg-gray-500 bg-opacity-75 flex justify-center items-center z-50">
-                    <div className="bg-white p-6 rounded-lg shadow-lg w-96">
-                        <h2 className="text-lg font-semibold mb-4">Edit Category</h2>
-                        <form onSubmit={handleSubmit(handleSaveEdit)}>
-                            <Controller
-                                name="name"
-                                control={control}
-                                defaultValue={categoryToEdit.name}
-                                render={({ field }) => (
-                                    <input
-                                        type="text"
-                                        {...field}
-                                        className="w-full mb-4 p-2 border rounded"
-                                        placeholder="Category Name"
-                                    />
-                                )}
-                            />
-                            <Controller
-                                name="description"
-                                control={control}
-                                defaultValue={categoryToEdit.description}
-                                render={({ field }) => (
-                                    <textarea
-                                        {...field}
-                                        className="w-full mb-4 p-2 border rounded"
-                                        placeholder="Description"
-                                    />
-                                )}
-                            />
-                            <div className="flex space-x-2">
-                                <button type="submit" className="bg-blue-500 text-white px-4 py-2 rounded">Save</button>
-                                <button type="button" onClick={() => setIsEditModalOpen(false)} className="bg-gray-500 text-white px-4 py-2 rounded">Cancel</button>
-                            </div>
-                        </form>
+            {isModalOpen && modalMode === "create" && (
+                <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-75">
+                    <div className="bg-white p-6 rounded-xl shadow-lg max-w-lg w-full">
+                        <AddCategoryForm
+                            seModalOpen={setModalOpen}
+                            mode='create'
+                            onSubmit={handleFormSubmit}
+                        />
                     </div>
                 </div>
             )}
 
-            {/* Delete Modal */}
-            {isDeleteModalOpen && categoryToDelete && (
-                <div className="fixed inset-0 bg-gray-500 bg-opacity-75 flex justify-center items-center z-50">
-                    <div className="bg-white p-6 rounded-lg shadow-lg w-96">
-                        <h2 className="text-lg font-semibold mb-4">Are you sure you want to delete this category?</h2>
-                        <p>{categoryToDelete.name}</p>
-                        <div className="flex space-x-2 mt-4">
-                            <button onClick={handleDeleteConfirm} className="bg-red-500 text-white px-4 py-2 rounded">Delete</button>
-                            <button onClick={() => setIsDeleteModalOpen(false)} className="bg-gray-500 text-white px-4 py-2 rounded">Cancel</button>
-                        </div>
+            {isModalOpen && modalMode === "edit" && (
+                <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-75">
+                    <div className="bg-white p-6 rounded-xl shadow-lg max-w-lg w-full">
+                        <AddCategoryForm
+                            mode='edit'
+                            seModalOpen={setModalOpen}
+                            defaultValues={selectedCategory || {}}
+                            onSubmit={handleFormSubmit}
+                        />
                     </div>
                 </div>
+            )}
+
+            {/* Delete Confirmation Modal */}
+            {isDeleteModalOpen && (
+                <DeleteModal
+                    onDelete={handleDeleteConfirm}
+                    onCancel={() => setDeleteModalOpen(false)}
+                />
             )}
         </DashboardLayout>
     );

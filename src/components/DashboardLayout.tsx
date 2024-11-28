@@ -10,7 +10,7 @@ const DashboardLayout = ({ children }: { children: ReactNode }) => {
     const title = pathname?.split('/').pop()?.replace('-', ' ') || 'Dashboard';
 
     return (
-        <div className="flex h-screen bg-gray-100">
+        <div className="flex h-screen bg-white">
             <Sidebar />
             <div className="flex-1 p-6 overflow-auto">
                 <PageHeader title={title} />

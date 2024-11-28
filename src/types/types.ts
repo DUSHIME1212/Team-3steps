@@ -180,4 +180,12 @@ export const userSchema = z.object({
   role: z.enum([Role.PROPERTY_BROKER, Role.STANDARD_USER, Role.SYSTEM_ADMIN]).optional(),  // Adjust according to your roles
 });
 
+export const categorySchema = z.object({
+  name: z.string().min(2, "Name must be at least 2 characters"),
+  description: z.string().min(2, "Last name must be at least 2 characters"),
+  parentId: z.number().optional(),
+});
+
 export type UserFormValues = z.infer<typeof userSchema>;
+
+export type CategoryFormValues = z.infer<typeof categorySchema>;
