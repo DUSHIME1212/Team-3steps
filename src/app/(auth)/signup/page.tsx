@@ -113,10 +113,10 @@ const SignupPage = () => {
         </div>
       </div>
 
-      <div className="w-full lg:w-1/2 flex items-start mt-32 justify-center p-8">
+      <div className="w-full lg:w-1/2 flex items-start mt-40 justify-center p-8">
         <div className="w-full max-w-md space-y-8">
-          <div className="text-center">
-            <h1 className="text-3xl font-bold tracking-tight text-gray-900">
+          <div>
+            <h1 className="text-3xl font-bold tracking-tight text-gray-900 pb-8">
               Create your account
             </h1>
             <div className="mt-4 flex justify-between items-start">

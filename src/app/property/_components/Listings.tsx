@@ -41,7 +41,17 @@ const Listings = () => {
       area: 1000,
       image: "/image.png",
       type: "villa"
-    }
+    },
+    {
+      id: 4,
+      title: "Sina Gerard",
+      price: 200000,
+      bedrooms: 4,
+      bathrooms: 4,
+      area: 1000,
+      image: "/image.png",
+      type: "rent"
+    },
     
   ];
 

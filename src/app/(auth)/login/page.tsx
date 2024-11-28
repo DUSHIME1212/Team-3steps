@@ -25,7 +25,12 @@ const Page = () => {
 
   const handleSubmit = async () => {
     try {
-      await login({ email: formData.email, password: formData.password });
+      const userData = {
+        email: formData.email,
+        password: formData.password
+      }
+
+      await login(userData);
       setTimeout(() => {
         router.push("/property");
       }, 2000);

@@ -14,10 +14,29 @@ import {
 import { Input } from "@/components/ui/input"
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "@/components/ui/select"
 import { uploadToCloudinary } from '@/app/api/actions/upload'
+import Image from 'next/image'
+import { Label } from './ui/label'
+import { Button } from './ui/button'
+import { toast } from 'react-toastify'
+import { useRouter } from 'next/navigation'
+
 
 const Addlistings = () => {
   const [imageUrl, setImageUrl] = useState<string | null>(null)
   const [uploading, setUploading] = useState(false)
+  const [imagePreview, setImagePreview] = useState<string | null>(null);
+  const router = useRouter()
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setImagePreview(reader.result as string);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
 
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -49,31 +68,43 @@ const Addlistings = () => {
               Please fill out the form below to add a new listing.
             </DialogDescription>
             <form className='flex flex-col gap-y-6' onChange={handleSubmit}>
-              <Input placeholder="Kigali, Rwanda" type="text" className="py-6" name="location" />
-              <Select>
-                <SelectTrigger className="w-full">
-                  <SelectValue placeholder="Property Type" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="apartment">Apartment</SelectItem>
-                  <SelectItem value="house">House</SelectItem>
-                  <SelectItem value="condo">Condo</SelectItem>
-                  <SelectItem value="townhouse">Townhouse</SelectItem>
-                </SelectContent>
-              </Select>
-
-              <Select>
-                <SelectTrigger className="w-full">
-                  <SelectValue placeholder="Bedrooms" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="1">1</SelectItem>
-                  <SelectItem value="2">2</SelectItem>
-                  <SelectItem value="3">3</SelectItem>
-                  <SelectItem value="4">4</SelectItem>
-                  <SelectItem value="5">5</SelectItem>
-                </SelectContent>
-              </Select>
+              <div>
+                <Label htmlFor="location">Location</Label>
+                <Input placeholder="Kigali, Rwanda" type="text" className="py-6" name="location" />
+              </div>
+              <div>
+                <Label htmlFor="price">Price</Label>
+                <Input placeholder="2000000" type="number" className="py-6" name="price" />
+              </div>
+              <div>
+                <Label htmlFor="propertyType">Property Type</Label>
+                <Select>
+                  <SelectTrigger className="w-full">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="apartment">Apartment</SelectItem>
+                    <SelectItem value="house">House</SelectItem>
+                    <SelectItem value="condo">Condo</SelectItem>
+                    <SelectItem value="townhouse">Townhouse</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+              <div>
+                <Label htmlFor="bedrooms">Bedrooms</Label>
+                <Select>
+                  <SelectTrigger className="w-full">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="1">1</SelectItem>
+                    <SelectItem value="2">2</SelectItem>
+                    <SelectItem value="3">3</SelectItem>
+                    <SelectItem value="4">4</SelectItem>
+                    <SelectItem value="5">5</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
               <div onChange={() => handleSubmit} className="w-full py-9 bg-gray-50 rounded-2xl border border-gray-300 gap-3 grid border-dashed">
                 <div className="grid gap-1">
                   <svg className="mx-auto" width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -83,11 +114,20 @@ const Addlistings = () => {
                   </svg>
                   <h2 className="text-center text-gray-400 text-xs leading-4">PNG, JPG or PDF, smaller than 15MB</h2>
                 </div>
+                {imagePreview && (
+                  <Image
+                    src={imagePreview}
+                    alt="Profile Preview"
+                    width={100}
+                    height={100}
+                    className="mx-auto rounded-full"
+                  />
+                )}
                 <div className="grid gap-2">
                   <h4 className="text-center text-gray-900 text-sm font-medium leading-snug">Drag and Drop your file here or</h4>
                   <div className="flex items-center justify-center">
                     <label>
-                      <input type="file" id='file' name="file" hidden />
+                      <input type="file" id='file' onChange={handleFileChange} name="file" hidden />
                       <div className="flex w-28 h-9 px-2 flex-col bg-indigo-600 rounded-full shadow text-white text-xs font-semibold leading-4 items-center justify-center cursor-pointer focus:outline-none">Choose File</div>
                     </label>
                   </div>
@@ -102,6 +142,18 @@ const Addlistings = () => {
               </div>
             )}
           </DialogHeader>
+          <Button
+            onClick={() => {
+              toast.success("The property added successfully")
+              setTimeout(() => {
+                router.push("/property");
+              }, 1000);
+            }}
+            className="w-full"
+            type="submit"
+          >
+            {"Add property"}
+          </Button>
         </DialogContent>
         <DialogFooter />
       </Dialog>
