@@ -1,12 +1,15 @@
 import Image from "next/image";
 import React from "react";
 import Listings from "./_components/Listings";
+import Footer from "@/components/Footer";
+import Navbar from "./_components/Navbar";
 
 const page = () => {
   const cover =
     "https://plus.unsplash.com/premium_photo-1675122317427-7d9dd55faf93?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D";
   return (
     <>
+      <Navbar/>
       <div className="min-h-[512px] flex items-center justify-center relative">
         <div className="size-full bg-gradient-to-t from-black/70 to-transparent  absolute z-10" />
         <Image src={cover} alt="" className="object-cover" fill />
@@ -26,6 +29,7 @@ const page = () => {
       <div className="px-8 lg:px-16">
         <Listings />
       </div>
+      <Footer/>
     </>
   );
 };

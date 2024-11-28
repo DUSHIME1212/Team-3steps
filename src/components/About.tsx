@@ -46,13 +46,13 @@ const About = () => {
           </div>
         </div>
         <div className="grid grid-rows-3 md:grid-rows-2 lg:grid-rows-2 gap-x-4 gap-y-2 grid-cols-1 md:grid-cols-2 lg:grid-cols-2">
-          <div className="row-span-1 md:row-span-2 lg:row-span-2 relative rounded-3xl overflow-clip">
+          <div className="row-span-1 md:row-span-2 lg:row-span-2 relative rounded-lg overflow-clip">
             <Image src={img1} alt="image" className="object-cover" fill />
           </div>
-          <div className="relative rounded-3xl overflow-clip">
+          <div className="relative rounded-lg overflow-clip">
             <img src={img2} alt="image" className="object-cover" />
           </div>
-          <div className="relative rounded-3xl overflow-clip">
+          <div className="relative rounded-lg overflow-clip">
             <img src={img3} alt="image" className="object-cover" />
           </div>
         </div>
