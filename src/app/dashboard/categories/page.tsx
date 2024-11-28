@@ -143,14 +143,14 @@ const CategoriesPage = () => {
     return (
         <DashboardLayout>
             <ToastContainer position="top-right" />
-            <div className='flex justify-between'>
-                <h1 className="text-2xl font-semibold mb-4">Categories</h1>
+            <div className='flex justify-between mx-2'>
+                <h1 className="text-2xl font-semibold my-4">Categories</h1>
                 <Button onClick={() => {
                     setModalMode("create")
                     setModalOpen(true)
                 }}>Add Category</Button>
             </div>
-            <div className="overflow-auto bg-white rounded-lg shadow p-6">
+            <div className="overflow-auto bg-white rounded-lg shadow">
                 <table className="min-w-full text-left border-collapse">
                     <thead className="bg-gray-200">
                         {table.getHeaderGroups().map(headerGroup => (

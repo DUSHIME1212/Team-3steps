@@ -143,15 +143,15 @@ const UsersTable = () => {
     return (
         <DashboardLayout>
             <ToastContainer position="top-right" />
-            <div className='mt-4'>
-                <div className='flex justify-between'>
+            <div className='mt-4 mx-2'>
+                <div className='flex justify-between my-4'>
                     <h1 className="text-2xl font-semibold mb-4">Users</h1>
                     <Button onClick={() => {
                         setModalMode("create")
                         setModalOpen(true)
                     }}>Add User</Button>
                 </div>
-                <div className="overflow-auto bg-white rounded-lg shadow p-6">
+                <div className="overflow-auto bg-white rounded-lg shadow">
                     <table className="min-w-full text-left border-collapse">
                         <thead className="bg-gray-200">
                             {table.getHeaderGroups().map(headerGroup => (

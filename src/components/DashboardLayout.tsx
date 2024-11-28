@@ -12,7 +12,7 @@ const DashboardLayout = ({ children }: { children: ReactNode }) => {
     return (
         <div className="flex h-screen bg-white">
             <Sidebar />
-            <div className="flex-1 p-6 overflow-auto">
+            <div className="flex-1 p-8 overflow-auto">
                 <PageHeader title={title} />
                 <main>{children}</main>
             </div>
