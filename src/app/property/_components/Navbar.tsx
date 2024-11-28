@@ -16,7 +16,7 @@ const Navbar = () => {
     { label: "Home", url: "/#home" },
     { label: "About us", url: "/#about" },
     { label: "Listings", url: "/#listings" },
-    { label: "Testimonies", url: "/test" },
+    { label: "Testimonies", url: "/#test" },
     { label: "property", url: "/property" },
   ];
   return (
@@ -29,7 +29,7 @@ const Navbar = () => {
         <div >
           <Sheet>
             <SheetTrigger className="flex gap-4 items-center">
-                <img src="/image.png" className="size-8 rounded-3xl object-cover" alt="" />Profile
+                <Image src="/image.png" className="size-8 rounded-3xl object-cover" alt="" />Profile
             </SheetTrigger>
             <SheetContent>
               <SheetHeader>
