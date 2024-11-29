@@ -1,25 +1,40 @@
 "use client"
-import { MapContainer, TileLayer } from 'react-leaflet'
-import "leaflet/dist/leaflet.css"
+import React from 'react'
+import { GoogleMap, useJsApiLoader } from '@react-google-maps/api'
+
+const containerStyle = {
+  width: '100%',
+  height: '400px',
+}
 
 const center = {
-  lat: 1.9851,
-  lng: 30.0319,
+  lat: -3.745,
+  lng: -38.523,
 }
 
-export default function Mapleaflet() {
-  return (
-    <MapContainer
-      key={`${center.lat}-${center.lng}`}  // Unique key based on center
-      center={center}
-      className='min-h-72'
+function MyComponent({coord}:{coord:any}) {
+  const { isLoaded } = useJsApiLoader({
+    id: 'google-map-script',
+    googleMapsApiKey: process.env.GOOGLE_MAPS_API_KEY!,
+  })
+
+  const onLoad = React.useCallback((map: google.maps.Map) => {
+    const bounds = new google.maps.LatLngBounds(center)
+    map.fitBounds(bounds)
+  }, [])
+
+  return isLoaded ? (
+    <GoogleMap
+      mapContainerStyle={containerStyle}
+      center={coord || center}
       zoom={13}
-      scrollWheelZoom={true}
+      onLoad={onLoad}
     >
-      <TileLayer
-        attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-      />
-    </MapContainer>
+      <></>
+    </GoogleMap>
+  ) : (
+    <></>
   )
 }
+
+export default React.memo(MyComponent)

@@ -22,7 +22,7 @@ const CategoriesPage = () => {
 
     const toggleDropdown = (id: number) => {
         setSelectedId(id)
-        setIsOpen((prev) => !prev); // Toggle state
+        setIsOpen((prev) => !prev);
     };
     // Close modal
     const handleCloseModal = () => {

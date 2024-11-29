@@ -36,7 +36,7 @@ const Navbar = () => {
       </div>
       <div className="flex justify-between px-8 items-center md:hidden lg:hidden">
         <div className="flex items-center">
-          <div className="h-16 w-16 relative">
+          <div className="size-4 relative">
             <Image src={'/images/logo2.png'} alt="" className="object-contain" fill />
           </div>
           <p className="text-sm font-semibold">Hello Rwanda</p>
@@ -66,7 +66,7 @@ const Navbar = () => {
       <div className="px-8 flex items-center md:px-16 lg:px-16 justify-between">
         <div className="flex flex-col items-center">
           <div className="items-center hidden md:flex lg:flex">
-            <div className="h-24 w-24 relative">
+            <div className="size-10 relative">
               <Image src={'/images/logo2.png'} alt="" className="object-contain" fill />
 
             </div>

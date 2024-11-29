@@ -5,7 +5,7 @@ import Image from 'next/image';
 
 
 const Carouselplay: React.FC = () => (
-  <Carousel className='min-h-80 rounded-3xl overflow-clip' arrows autoplay>
+  <Carousel className='min-h-80 rounded-xl overflow-clip' arrows autoplay>
     <div className='min-h-96 bg-blue-200 relative'>
         <Image src={"https://d33wubrfki0l68.cloudfront.net/c3f66284b4ed4de2785a5fcc629be503d6399797/a13c0/assets/images/1.jpg"} className='object-cover' alt='' fill/>
       <h3>1</h3>
