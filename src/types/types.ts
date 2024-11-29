@@ -12,15 +12,15 @@ export enum LocationType {
 // src/types/types.ts
 
 export interface File {
-  id: number;
+  id?: number;
   name: string;
   url: string;
-  size: bigint; // Use `bigint` for large numbers
+  size: number; // Use `bigint` for large numbers
   sizeType: string;
   type: string;
   propertyPostId?: number;
-  createdAt: Date;
-  updatedAt: Date;
+  createdAt?: Date;
+  updatedAt?: Date;
 }
 
 export enum PropertyCondition {
@@ -105,7 +105,7 @@ export interface PropertyPost {
 }
 
 export interface PropertyLocation {
-  id: number;
+  id?: number;
   country?: string;
   province?: string;
   district?: string;
@@ -150,7 +150,7 @@ export interface Location {
 }
 
 export interface PropertyLocation {
-  id: number;
+  id?: number;
   country?: string;
   province?: string;
   district?: string;
@@ -218,13 +218,21 @@ export const propertySchema = z.object({
   description: z.string().min(10, 'Description must be at least 10 characters'),
   listingType: z.enum([ListingType.RENT, ListingType.SALE]),
   propertyCondition: z.enum([PropertyCondition.NEW, PropertyCondition.BAD, PropertyCondition.GOOD, PropertyCondition.REFURBISHED]),
-  price: z.number().min(0),
+  price: z.number().min(1, 'Price must be a positive number'),
   currency: z.enum([Currency.RWF, Currency.USD]),
-  country: z.string(),
-  province: z.string(),
-  district: z.string(),
   attachments: z.any().optional(),
 });
+
+export const propertyLocation = z.object({
+  province: z.string().min(1, 'Province is required'),
+  district: z.string().min(1, 'Disctrict is required'),
+  sector: z.string().min(1, 'Sector is required'),
+  cell: z.string().min(1, 'Cell is required'),
+  village: z.string().min(1, 'Village is required'),
+  propertyPostId: z.number().optional(),
+})
+
+export type IPropertyLocationValues = z.infer<typeof propertyLocation>;
 
 export type PropertyFormValues = z.infer<typeof propertySchema>;
 

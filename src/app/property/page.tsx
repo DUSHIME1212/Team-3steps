@@ -12,7 +12,8 @@ const page = () => {
       <Navbar/>
       <div className="min-h-[512px] flex items-center justify-center relative">
         <div className="size-full bg-gradient-to-t from-black/70 to-transparent  absolute z-10" />
-        <Image src={cover} alt="" className="object-cover" fill />
+        <Image src={cover} alt="" fill className="object-cover -z-0" />
+
         <div className="mt-32 text-white size-full z-20 px-8 md:px-16">
           <h1 className="text-5xl font-dmsans font-bold text-white">
             Welcome to our property page

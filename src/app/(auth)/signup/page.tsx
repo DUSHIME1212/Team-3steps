@@ -99,13 +99,8 @@ const SignupPage = () => {
 
       <ToastContainer position="top-right" />
       <div className="hidden lg:flex lg:w-1/2 relative">
-        <Image
-          src="/image.png"
-          alt="Sign up background"
-          fill
-          className="object-cover rounded-r-3xl"
-          priority
-        />
+           <Image src={"/image.png"} alt="" fill className="object-cover -z-0" />
+
         <div className="absolute inset-0 bg-darkBlue/20" />
         <div className="absolute bottom-80 left-10 text-white">
           <h2 className="text-4xl font-bold mb-4">Join our community</h2>

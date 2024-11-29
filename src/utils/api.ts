@@ -1,4 +1,4 @@
-import { Category, CategoryFormValues, PropertyFormValues, User, UserFormValues } from "@/types/types";
+import { Category, CategoryFormValues, File, IPropertyLocationValues, PropertyFormValues, PropertyPost, User, UserFormValues } from "@/types/types";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { toast } from "react-toastify";
@@ -48,7 +48,7 @@ export const fetchProperties = async () => {
 export const createCategoryApiCall = async (categoryData: CategoryFormValues) => {
     try {
         // Make the API call to register the user
-        const response = await axios.post(`${API_BASE_URL}/categories/categories`, categoryData, {
+        const response = await axios.post(`${API_BASE_URL}/categories`, categoryData, {
             headers: {
                 'Content-Type': 'application/json', // Sending data as JSON
             },
@@ -74,7 +74,7 @@ export const createCategoryApiCall = async (categoryData: CategoryFormValues) =>
 export const deleteCategoryApiCall = async (id: number) => {
     try {
         // Make the API call to register the user
-        const response = await axios.delete(`${API_BASE_URL}/categories/categories/${id}`);
+        const response = await axios.delete(`${API_BASE_URL}/categories/${id}`);
 
         // If the registration is successful, show success message
         toast.success(response.data.message || 'Category deleted successfully'); // Success message
@@ -97,7 +97,7 @@ export const deleteCategoryApiCall = async (id: number) => {
 export const updateCategoryApiCall = async (id: number, categoryData: CategoryFormValues) => {
     try {
         // Make the API call to register the user
-        const response = await axios.put(`${API_BASE_URL}/categories/categories/${id}`, categoryData, {
+        const response = await axios.put(`${API_BASE_URL}/categories/${id}`, categoryData, {
             headers: {
                 'Content-Type': 'application/json', // Sending data as JSON
             },
@@ -123,7 +123,34 @@ export const updateCategoryApiCall = async (id: number, categoryData: CategoryFo
     }
 };
 
-export const createPropertyApiCall = async (propertyData: PropertyFormValues) => {
+export const createPropertyLocationApiCall = async (propertyData: IPropertyLocationValues) => {
+    try {
+        // Make the API call to register the user
+        const response = await axios.post(`${API_BASE_URL}/propertyLocation`, propertyData, {
+            headers: {
+                'Content-Type': 'application/json', // Sending data as JSON
+            },
+        });
+
+        // If the registration is successful, show success message
+        toast.success(response.data.message || 'Property location added successfully'); // Success message
+        return response.data; // Return the response data
+    } catch (error: unknown) {
+        let errorMessage = 'Property location addition failed, please try again.';
+        if (error instanceof Error) {
+            errorMessage = error.message;
+        } else if (typeof error === 'object' && error !== null && 'response' in error) {
+            const response = (error as { response?: { data?: { message?: string } } }).response;
+            if (response && response.data && response.data.message) {
+                errorMessage = response.data.message;
+            }
+        }
+        toast.error(errorMessage);
+        throw error; // Rethrow the error for handling upstream
+    }
+};
+
+export const createPropertyApiCall = async (propertyData: PropertyFormValues): Promise<any> => {
     try {
         // Make the API call to register the user
         const response = await axios.post(`${API_BASE_URL}/propertyPosts`, propertyData, {
@@ -153,7 +180,7 @@ export const createPropertyApiCall = async (propertyData: PropertyFormValues) =>
 export const deletePropertyApiCall = async (id: number) => {
     try {
         // Make the API call to register the user
-        const response = await axios.delete(`${API_BASE_URL}/propertyData/${id}`);
+        const response = await axios.delete(`${API_BASE_URL}/propertyPosts/${id}`);
         // If the registration is successful, show success message
         toast.success(response.data.message || 'User deleted successfully'); // Success message
         return response.data; // Return the response data
@@ -226,6 +253,33 @@ export const createUserApiCall = async (userData: UserFormValues) => {
     }
 };
 
+export const uploadFileApiCall = async (fileData: File) => {
+    try {
+        // Make the API call to register the user
+        const response = await axios.post(`${API_BASE_URL}/files`, fileData, {
+            headers: {
+                'Content-Type': 'application/json', // Sending data as JSON
+            },
+        });
+
+        // If the registration is successful, show success message
+        toast.success(response.data.message || 'File uploaded successfully'); // Success message
+        return response.data; // Return the response data
+    } catch (error: unknown) {
+        let errorMessage = 'Uploading file failed, please try again.';
+        if (error instanceof Error) {
+            errorMessage = error.message;
+        } else if (typeof error === 'object' && error !== null && 'response' in error) {
+            const response = (error as { response?: { data?: { message?: string } } }).response;
+            if (response && response.data && response.data.message) {
+                errorMessage = response.data.message;
+            }
+        }
+        toast.error(errorMessage);
+        throw error; // Rethrow the error for handling upstream
+    }
+};
+
 export const deleteUserApiCall = async (id: number) => {
     try {
         // Make the API call to register the user
@@ -252,7 +306,7 @@ export const deleteUserApiCall = async (id: number) => {
 export const updatePropertyApiCall = async (id: number, locationData: PropertyFormValues) => {
     try {
         // Make the API call to register the user
-        const response = await axios.put(`${API_BASE_URL}/propertyData/${id}`, locationData, {
+        const response = await axios.put(`${API_BASE_URL}/propertyPosts/${id}`, locationData, {
             headers: {
                 'Content-Type': 'application/json', // Sending data as JSON
             },
@@ -282,18 +336,27 @@ export const useGetUsers = () => {
         queryFn: () => axios.get(`${API_BASE_URL}/users`).then((res) => res.data),
     });
 };
+
+
 export const useGetCategories = () => {
     return useQuery<IResponse<Category>, Error>({
         queryKey: ['categories'],
-        queryFn: () => axios.get(`${API_BASE_URL}/categories/categories`).then((res) => res.data),
+        queryFn: () => axios.get(`${API_BASE_URL}/categories`).then((res) => res.data),
     });
 };
 
 
+export const useGetProperties = () => {
+    return useQuery<IResponse<PropertyPost>, Error>({
+        queryKey: ['properties'],
+        queryFn: () => axios.get(`${API_BASE_URL}/propertyPosts`).then((res) => res.data),
+    });
+};
+
 export const useGetCategoryById = (id: number) => {
     return useQuery<SingleResponse<Category>, Error>({
         queryKey: ['category'],
-        queryFn: () => axios.get(`${API_BASE_URL}/categories/categories/${id}`).then((res) => res.data),
+        queryFn: () => axios.get(`${API_BASE_URL}/categories/${id}`).then((res) => res.data),
         enabled: !!id,
     });
 };

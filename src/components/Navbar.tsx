@@ -36,9 +36,6 @@ const Navbar = () => {
       </div>
       <div className="flex justify-between px-8 items-center md:hidden lg:hidden">
         <div className="flex items-center">
-          <div className="size-4 relative">
-            <Image src={'/images/logo2.png'} alt="" className="object-contain" fill />
-          </div>
           <p className="text-sm font-semibold">Hello Rwanda</p>
         </div>
         {/* Hamburger Menu Icon */}

@@ -186,9 +186,6 @@ const UsersTable = () => {
                             mode='create'
                             onSubmit={handleFormSubmit}
                         />
-                        <button onClick={handleCloseModal} className="mt-4 w-full bg-gray-300 px-4 py-2 rounded">
-                            Cancel
-                        </button>
                     </div>
                 </div>
             )}

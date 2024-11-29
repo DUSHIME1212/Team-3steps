@@ -46,6 +46,7 @@ export const useAuth = () => {
 
             console.log('data: ', response.data);
             step3token = sessionStorage.getItem('3step-token');
+            localStorage.setItem('user', JSON.stringify(response.data.user));
             // If the registration is successful, show success message
             toast.success(response.data.message || 'User Logged in successfully');
             console.log("Toast should appear: success");

@@ -14,7 +14,7 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { User } from "@/types/types";
 
-const Navbar = () => {
+const DashboardNavbar = () => {
   const router = useRouter()
   const storedUser: User = JSON.parse(localStorage.getItem('user') || '{}');
 
@@ -26,12 +26,8 @@ const Navbar = () => {
     { label: "property", url: "/property" },
   ];
   return (
-    <div className="p-8 md:px-16 flex flex-row justify-between">
+    <div className="flex flex-row justify-between">
       <div className="flex flex-row w-full items-center justify-between">
-        <Button variant={"linkHover1"} className="rounded-none" asChild>
-          <Link href="/">{links[0].label}</Link>
-        </Button>
-        <Link href="/dashboard/categories">Dashboard</Link>
         <div >
           <Sheet>
             <SheetTrigger className="flex gap-4 items-center">
@@ -96,4 +92,4 @@ const Navbar = () => {
   );
 };
 
-export default Navbar;
+export default DashboardNavbar;
