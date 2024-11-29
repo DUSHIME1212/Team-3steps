@@ -42,7 +42,6 @@ const UsersTable = () => {
             ...data,
             birthDate: formattedBirthDate,
         };
-        console.log('hereee: ', formattedData);
 
         if (modalMode === 'create') {
             // Call API to create a new user
@@ -210,7 +209,6 @@ const UsersTable = () => {
             {/* Delete Confirmation Modal */}
             {isDeleteModalOpen && (
                 <DeleteModal
-
                     onDelete={handleDeleteConfirm}
                     onCancel={() => setDeleteModalOpen(false)}
                 />

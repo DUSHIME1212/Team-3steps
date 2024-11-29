@@ -16,7 +16,7 @@ interface UserFormProps {
     defaultValues?: Partial<User>; // For edit form
 }
 
-const UserForm: React.FC<UserFormProps> = ({ onSubmit, defaultValues, mode, seModalOpen, }) => {
+const UserForm: React.FC<UserFormProps> = ({ onSubmit, defaultValues, mode, seModalOpen }) => {
     const {
         register,
         handleSubmit,

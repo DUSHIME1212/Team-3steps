@@ -3,19 +3,40 @@ import { useEffect, useState } from 'react';
 import { useReactTable, getCoreRowModel, ColumnDef, flexRender, Row } from '@tanstack/react-table';
 import DashboardLayout from '../../../components/DashboardLayout';  // Assuming your layout component is here
 import axios from 'axios';
-import { ApprovalStatus, Currency, ListingType, PaymentStatus, PropertyCondition, PropertyPost, propertyPostSchema } from '@/types/types';
+import { ApprovalStatus, Currency, ListingType, PaymentStatus, PropertyCondition, PropertyFormValues, PropertyPost, propertyPostSchema } from '@/types/types';
 import { Controller, useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Button } from '@/components/ui/button';
+import PropertyPostForm from '@/components/AddPropertyPost';
+import { createPropertyApiCall, updatePropertyApiCall } from '@/utils/api';
 
 const PropertiesPage = () => {
-    const [properties, setProperties] = useState<PropertyPost[]>([]);
-    const [propertyToEdit, setPropertyToEdit] = useState<PropertyPost | null>(null);
     const [propertyToDelete, setPropertyToDelete] = useState<PropertyPost | null>(null);
     const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+    const [selectedProperty, setSelectedProperty] = useState<Partial<PropertyPost> | null>(null);
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
-    const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
+    const [isModalOpen, setModalOpen] = useState<boolean>(false);
+    const [modalMode, setModalMode] = useState<'create' | 'edit'>('create');
+
+    // Close modal
+    const handleCloseModal = () => {
+        setModalOpen(false);
+        setSelectedUser(null);
+    };
+
+    // Handle form submission (create or update)
+    const handleFormSubmit = async (data: PropertyFormValues) => {
+        if (modalMode === 'create') {
+            // Call API to create a new user
+            await createPropertyApiCall(data); // Replace with your API call
+        } else {
+            // Call API to update existing user
+            await updatePropertyApiCall(selectedProperty?.id as number, data); // Replace with your API call
+        }
+        handleCloseModal(); // Close the modal
+        refetch(); // Refresh the user data
+    };
 
     // Initialize react-hook-form with Zod schema validation
     const { control, handleSubmit, formState: { errors }, reset } = useForm<PropertyPost>({
@@ -36,71 +57,22 @@ const PropertiesPage = () => {
         },
     });
 
-    // Handle form submission
-    const onSubmit = (data: PropertyPost) => {
-        // Perform the API call to save the property
-        axios.post('/api/properties', data)
-            .then(() => {
-                toast.success('Property created successfully!');
-                setIsCreateModalOpen(false);
-            })
-            .catch(() => {
-                toast.error('Failed to create property.');
-            });
-    };
-
-    // Handle edit property
-    const handleEditProperty = (property: Row<PropertyPost>) => {
-        setPropertyToEdit(property.original);
-        setIsEditModalOpen(true);
-        reset({ title: property.original.title, description: property.original.description });
-    };
-
-    // Handle edit form submission
-    const handleSaveEdit = (data: PropertyPost) => {
-        if (propertyToEdit) {
-            axios.put(`/api/properties/${propertyToEdit.id}`, data)
-                .then(() => {
-                    toast.success('Property updated successfully!');
-                    setProperties(properties.map(property =>
-                        property.id === propertyToEdit.id ? { ...property, ...data } : property
-                    ));
-                    setIsEditModalOpen(false);
-                })
-                .catch(() => {
-                    toast.error('Failed to update property.');
-                });
-        }
-    };
-
     // Handle delete property
     const handleDeleteProperty = (property: Row<PropertyPost>) => {
         setPropertyToDelete(property.original);
         setIsDeleteModalOpen(true);
     };
 
-    // Handle delete confirmation
-    const handleDeleteConfirm = () => {
-        if (propertyToDelete) {
-            axios.delete(`/api/properties/${propertyToDelete.id}`)
-                .then(() => {
-                    toast.success('Property deleted successfully!');
-                    setProperties(properties.filter(property => property.id !== propertyToDelete.id));
-                    setIsDeleteModalOpen(false);
-                })
-                .catch(() => {
-                    toast.error('Failed to delete property.');
-                });
-        }
+    const handleEditClick = (info: Row<User>) => {
+        setSelectedProperty(info.original)
+        setModalMode("edit")
+        setModalOpen(true)
     };
-    // Fetch properties from API
-    useEffect(() => {
-        axios.get('/api/properties')
-            .then(response => setProperties(response.data))
-            .catch(error => console.error('Error fetching properties:', error));
-    }, []);
 
-
+    const handleDeleteClick = (info: Row<User>) => {
+        setSelectedProperty(info.original)
+        setDeleteModalOpen(true)
+    };
 
     // Define columns for Properties table
     const propertyColumns: ColumnDef<PropertyPost>[] = [
@@ -142,13 +114,12 @@ const PropertiesPage = () => {
         getCoreRowModel: getCoreRowModel(),
     });
 
-
     return (
         <DashboardLayout>
             <div className='flex justify-between'>
                 <h1 className="text-2xl font-semibold mb-4">Properties</h1>
                 <Button onClick={() => {
-                    setIsCreateModalOpen(true)
+                    setModalOpen(true)
                 }}>Add New Property</Button>
             </div>
             <div className="overflow-auto bg-white rounded-lg shadow p-6">
@@ -178,54 +149,14 @@ const PropertiesPage = () => {
                 </table>
             </div>
             {/* Create Property Modal */}
-            {isCreateModalOpen && (
-                <div className="fixed inset-0 bg-gray-500 bg-opacity-75 flex justify-center items-center z-50">
-                    <div className="bg-white p-6 rounded-lg shadow-lg w-96">
-                        <h2 className="text-xl font-semibold mb-4">Create Property</h2>
-                        <form onSubmit={handleSubmit(onSubmit)}>
-                            <div className="mb-4">
-                                <label className="block mb-2">Title</label>
-                                <Controller
-                                    name="title"
-                                    control={control}
-                                    render={({ field }) => (
-                                        <input {...field} className="w-full p-2 border rounded" placeholder="Property Title" />
-                                    )}
-                                />
-                                {errors.title && <p className="text-red-500 text-sm">{errors.title.message}</p>}
-                            </div>
-
-                            <div className="mb-4">
-                                <label className="block mb-2">Description</label>
-                                <Controller
-                                    name="description"
-                                    control={control}
-                                    render={({ field }) => (
-                                        <textarea {...field} className="w-full p-2 border rounded" placeholder="Description" />
-                                    )}
-                                />
-                                {errors.description && <p className="text-red-500 text-sm">{errors.description.message}</p>}
-                            </div>
-
-                            <div className="mb-4">
-                                <label className="block mb-2">Price</label>
-                                <Controller
-                                    name="price"
-                                    control={control}
-                                    render={({ field }) => (
-                                        <input {...field} type="number" className="w-full p-2 border rounded" placeholder="Price" />
-                                    )}
-                                />
-                                {errors.price && <p className="text-red-500 text-sm">{errors.price.message}</p>}
-                            </div>
-
-                            {/* Additional fields such as listingType, paymentStatus, etc., can be added here */}
-
-                            <div className="mb-4 flex space-x-4">
-                                <button type="submit" className="bg-blue-500 text-white px-4 py-2 rounded">Save</button>
-                                <button type="button" onClick={() => setIsCreateModalOpen(false)} className="bg-gray-500 text-white px-4 py-2 rounded">Cancel</button>
-                            </div>
-                        </form>
+            {isModalOpen && modalMode === "create" && (
+                <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-75">
+                    <div className="bg-white p-6 rounded-xl shadow-lg max-w-lg w-full">
+                        <PropertyPostForm
+                            seModalOpen={setModalOpen}
+                            mode='create'
+                            onSubmit={handleFormSubmit}
+                        />
                     </div>
                 </div>
             )}
@@ -271,6 +202,8 @@ const PropertiesPage = () => {
                                 />
                                 {errors.description && <p className="text-red-500 text-sm">{errors.description.message}</p>}
                             </div>
+
+
 
                             {/* Price Field */}
                             <div className="mb-4">

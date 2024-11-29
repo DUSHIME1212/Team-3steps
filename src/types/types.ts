@@ -9,6 +9,20 @@ export enum LocationType {
   VILLAGE = "VILLAGE",
 }
 
+// src/types/types.ts
+
+export interface File {
+  id: number;
+  name: string;
+  url: string;
+  size: bigint; // Use `bigint` for large numbers
+  sizeType: string;
+  type: string;
+  propertyPostId?: number;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
 export enum PropertyCondition {
   NEW = "NEW",
   REFURBISHED = "REFURBISHED",
@@ -83,7 +97,7 @@ export interface PropertyPost {
   authorId: number;
   propertyLocationId?: number;
   categories: Category[];
-  attachments: File[];
+  attachments: LocalFile[];
   createdAt?: string; // Date as string
   updatedAt?: string; // Date as string
   author: User;
@@ -114,7 +128,7 @@ export interface Category {
   parent?: Category;
 }
 
-export interface File {
+export interface LocalFile {
   id: number;
   name: string;
   url: string;
@@ -147,6 +161,18 @@ export interface PropertyLocation {
   propertyPost?: PropertyPost;
 }
 
+// Define the attachment schema conditionally based on the environment
+const fileSchema = z.object({
+  id: z.number(),
+  name: z.string(),
+  url: z.string().url(),
+  size: z.bigint(), // BigInt handling
+  sizeType: z.string(),
+  type: z.string(),
+  propertyPostId: z.number().optional(),
+  createdAt: z.string().datetime(),
+  updatedAt: z.string().datetime(),
+});
 
 export const propertyPostSchema = z.object({
   title: z.string().min(5, 'Title must be at least 5 characters long'),
@@ -163,7 +189,7 @@ export const propertyPostSchema = z.object({
     id: z.number(),
     name: z.string(),
   })),
-  attachments: z.array(z.instanceof(File)),
+  attachments: z.array(fileSchema),
   propertyLocationId: z.optional(z.number()),
 });
 
@@ -185,6 +211,22 @@ export const categorySchema = z.object({
   description: z.string().min(2, "Last name must be at least 2 characters"),
   parentId: z.number().optional(),
 });
+
+
+export const propertySchema = z.object({
+  title: z.string().min(1, 'Title is required'),
+  description: z.string().min(10, 'Description must be at least 10 characters'),
+  listingType: z.enum([ListingType.RENT, ListingType.SALE]),
+  propertyCondition: z.enum([PropertyCondition.NEW, PropertyCondition.BAD, PropertyCondition.GOOD, PropertyCondition.REFURBISHED]),
+  price: z.number().min(0),
+  currency: z.enum([Currency.RWF, Currency.USD]),
+  country: z.string(),
+  province: z.string(),
+  district: z.string(),
+  attachments: z.any().optional(),
+});
+
+export type PropertyFormValues = z.infer<typeof propertySchema>;
 
 export type UserFormValues = z.infer<typeof userSchema>;
 

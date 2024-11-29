@@ -11,7 +11,6 @@ export default function Home() {
   return (
     <main >
       <ToastContainer position="top-right" />
-
       <header>
         <Navbar />
       </header>
